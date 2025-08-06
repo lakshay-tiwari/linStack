@@ -4,7 +4,13 @@ import {
   EyeOff
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import axios from 'axios';
+import backendUrl from '../backendURI';
+
 
 interface SignupFormData {
   username: string;
@@ -14,44 +20,53 @@ interface SignupFormData {
 }
 
 const SignupPage: React.FC = () => {
+  //@ts-ignore
   const [isSignup, setIsSignup] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [userName , setUsername] = useState<String>("");
-  const [email , setEmail] = useState<String>("");
-  const [password, setPassword] = useState<String>("");
-  const [bio , setBio] = useState<String>("");
   const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>();
   const navigate = useNavigate();
 
+  //@ts-ignore -> used for artificial delay
+  async function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
-
+    const signupBody:SignupFormData = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+      bio: data.bio 
+    }
     try {
-      // Replace with your API call
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Signup failed');
-      }
-
-      console.log('Signup successful:', result);
-      // Redirect or show success message here
+      //@ts-ignore
+      const response = await axios.post(`${backendUrl}/api/auth/signup`,signupBody);
+      toast.success('SignUp Successfully');
+      navigate('/home');
+     
     } catch (error: any) {
+      console.log(error);
       console.error('Signup error:', error.message);
-      // Show error toast or message
+      if (error.response.data.error === 'Email already in use'){
+        toast.error('Email already in use');
+      }else{
+        toast.error('Something went wrong!')
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (isLoading){
+    return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 flex items-center justify-center p-4 relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5 dark:from-blue-400/5 dark:to-purple-400/5"></div>
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress size="4rem"/>
+      </Box>
+    </div>
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 flex items-center justify-center p-4 relative">
@@ -82,9 +97,6 @@ const SignupPage: React.FC = () => {
                   type="text"
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter your username"
-                  onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-                    setUsername(e.target.value);
-                  }}
                 />
                 {errors.username && (
                   <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
@@ -101,9 +113,6 @@ const SignupPage: React.FC = () => {
                 type="email"
                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email"
-                onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-                    setEmail(e.target.value);
-                }}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
@@ -120,9 +129,6 @@ const SignupPage: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   className="w-full px-4 py-3 pr-12 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter your password"
-                  onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-                    setPassword(e.target.value);
-                  }}
                 />
                 <button
                   type="button"
@@ -147,9 +153,6 @@ const SignupPage: React.FC = () => {
                   rows={3}
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
                   placeholder="Tell us a bit about yourself..."
-                  onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
-                    setBio(e.target.value);
-                  }}
                 />
               </div>
             )}
@@ -157,11 +160,6 @@ const SignupPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              onClick={()=>{
-                // write logic to axios request 
-                // after this navigate
-                navigate('/home');
-              }}
               className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               {isLoading ? 'Processing...' : (isSignup ? 'Create Account' : 'Sign In')}

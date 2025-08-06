@@ -5,6 +5,11 @@ import {
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router"
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import axios from 'axios';
+import backendUrl from '../backendURI';
+import toast from "react-hot-toast";
 
 interface SignupFormData {
   username: string;
@@ -18,39 +23,44 @@ const SigninPage: React.FC = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [email , setEmail] = useState<String>("");
-  const [password, setPassword] = useState<String>("");
   const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>();
   const navigate = useNavigate();
 
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
 
+    const signinBody: { email: string , password : string } = {
+      email: data.email,
+      password: data.password
+    }    
     try {
-      // Replace with your API call
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Signup failed');
-      }
-
-      console.log('Signup successful:', result);
-      // Redirect or show success message here
+      //@ts-ignore
+      const response = await axios.post(`${backendUrl}/api/auth/signin`, signinBody);
+      toast.success("Signin Successfull");
+      navigate('/home');
     } catch (error: any) {
+      console.log(error);
       console.error('Signup error:', error.message);
-      // Show error toast or message
+      if (error.response.data.error === 'Invalid credentials'){
+        toast.error('Invalid Credentials');
+      }
+      else {
+        toast.error('Something went wrong');
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
+
+  if (isLoading){
+    return <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 flex items-center justify-center p-4 relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5 dark:from-blue-400/5 dark:to-purple-400/5"></div>
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress size="4rem"/>
+      </Box>
+    </div>
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 flex items-center justify-center p-4 relative">
@@ -81,9 +91,6 @@ const SigninPage: React.FC = () => {
                   type="text"
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter your username"
-                  onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-                    console.log('nothing to do')
-                  }}
                 />
                 {errors.username && (
                   <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
@@ -100,9 +107,6 @@ const SigninPage: React.FC = () => {
                 type="email"
                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email"
-                onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-                    setEmail(e.target.value);
-                }}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
@@ -119,9 +123,6 @@ const SigninPage: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   className="w-full px-4 py-3 pr-12 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter your password"
-                  onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-                    setPassword(e.target.value);
-                  }}
                 />
                 <button
                   type="button"
@@ -146,9 +147,6 @@ const SigninPage: React.FC = () => {
                   rows={3}
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
                   placeholder="Tell us a bit about yourself..."
-                  onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
-                    console.log('nothing to do ');
-                  }}
                 />
               </div>
             )}
@@ -156,13 +154,6 @@ const SigninPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              onClick={()=>{
-                // write logic to axios request 
-                // after this navigate
-
-                
-                navigate('/home');
-              }}
               className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               {isLoading ? 'Processing...' : (isSignup ? 'Create Account' : 'Sign In')}

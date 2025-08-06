@@ -4,6 +4,7 @@ import { prisma } from '../lib/prisma'
 // Create a new post
 export const createPost = async (req: Request, res: Response) => {
   const { content } = req.body;
+  //@ts-ignore
   const userId = (req.user as { id: string }).id;
 
   if (!content) return res.status(400).json({ error: 'Content is required' });
@@ -20,6 +21,7 @@ export const createPost = async (req: Request, res: Response) => {
 
 // Like a post
 export const likePost = async (req: Request, res: Response) => {
+  // @ts-ignore
   const userId = (req.user as { id: string }).id;
   const { postId } = req.params;
 
@@ -46,6 +48,7 @@ export const likePost = async (req: Request, res: Response) => {
 
 // Comment on a post
 export const commentOnPost = async (req: Request, res: Response) => {
+  // @ts-ignore
   const userId = (req.user as { id: string }).id;
   const { postId } = req.params;
   const { content } = req.body;
