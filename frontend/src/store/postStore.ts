@@ -48,10 +48,10 @@ export const usePostStore = create<PostStore>((set) => ({
         `${backendUrl}/api/posts/`,
         { withCredentials: true }
       );
-      set({ posts: res.data.posts, loading: false }); // ✅ stop loader after success
+      set({ posts: res.data.posts, loading: false }); 
     } catch (error) {
       console.error("Error fetching posts:", error);
-      set({ loading: false }); // ✅ stop loader on error
+      set({ loading: false }); 
     }
   },
 }));
