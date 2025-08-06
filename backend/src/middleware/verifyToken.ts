@@ -2,8 +2,9 @@ import { Request, Response , NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  console.log('hi');
   const token = req.cookies?.token; // ✅ Get token from cookies
-
+  console.log(token);
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }

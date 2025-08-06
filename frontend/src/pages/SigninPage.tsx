@@ -35,7 +35,7 @@ const SigninPage: React.FC = () => {
     }    
     try {
       //@ts-ignore
-      const response = await axios.post(`${backendUrl}/api/auth/signin`, signinBody);
+      const response = await axios.post(`${backendUrl}/api/auth/signin`, signinBody , { withCredentials: true});
       toast.success("Signin Successfull");
       navigate('/home');
     } catch (error: any) {

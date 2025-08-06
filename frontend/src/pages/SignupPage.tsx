@@ -42,7 +42,7 @@ const SignupPage: React.FC = () => {
     }
     try {
       //@ts-ignore
-      const response = await axios.post(`${backendUrl}/api/auth/signup`,signupBody);
+      const response = await axios.post(`${backendUrl}/api/auth/signup`,signupBody , { withCredentials: true});
       toast.success('SignUp Successfully');
       navigate('/home');
      

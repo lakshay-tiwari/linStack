@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { prisma } from '../lib/prisma' // adjust path if needed
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret' // secure this in env
-
+const NODE_ENV = process.env.NODE_ENV || 'development';
 // POST /signup
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -27,7 +27,13 @@ export const signUp = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' })
 
-    res.cookie('token', token, { httpOnly: true , sameSite: 'strict'})
+   res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: NODE_ENV === "production" ? "none" : "lax",
+    secure: NODE_ENV === "production"
+   });
+
+
     res.json({ message: 'Signup successful' })
   } catch (error) {
     console.error('Signup error:', error)
@@ -56,7 +62,12 @@ export const signIn = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' })
 
-    res.cookie('token', token, { httpOnly: true })
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: NODE_ENV === "production" ? "none" : "lax",
+      secure: NODE_ENV === "production"
+     });
+    
     res.json({ message: 'Signin successful' })
   } catch (error) {
     console.error('Signin error:', error)

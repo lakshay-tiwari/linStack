@@ -8,10 +8,16 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+
+// Only trust proxy in production
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: CLIENT_URL,
   credentials: true,
 }));
 app.use(express.json());
