@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import { createPost, likePost, commentOnPost } from '../controller/post.controller';
+import { createPost, likePost, commentOnPost, getAllPosts } from '../controller/post.controller';
 import { verifyToken } from '../middleware/verifyToken';
 
 const router = Router();
 
 // POST /api/posts - create a new post
-router.post('/', verifyToken, createPost);
+router.post('/create', verifyToken, createPost);
+
+//GET /api/posts - get all post
+router.get('/' , verifyToken , getAllPosts);
 
 // POST /api/posts/:postId/like - like a post
 router.post('/:postId/like', verifyToken, likePost);

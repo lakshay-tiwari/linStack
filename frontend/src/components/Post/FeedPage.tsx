@@ -1,47 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import CreatePost from "./CreatePost";
 import PostCard from "./PostCard";
+import { usePostStore } from "../../store/postStore";
+import { Loader2 } from "lucide-react"; // ✅ for spinner
 
 const FeedPage: React.FC = () => {
-  const [posts] = useState([
-    {
-      id: "1",
-      userId: "2",
-      username: "Sarah Johnson",
-      content:
-        "Just finished an amazing project with my team! 🚀",
-      likes: ["3", "4"],
-      comments: [
-        {
-          id: "1",
-          userId: "3",
-          username: "Mike Chen",
-          content: "Congratulations! Would love to hear more about it.",
-          createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-        },
-      ],
-      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "2",
-      userId: "3",
-      username: "Mike Chen",
-      content:
-        "Thoughts on the latest developments in AI and ML? 🤖",
-      likes: ["1", "4"],
-      comments: [],
-      createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-    },
-  ]);
+  const { posts, fetchPosts, loading } = usePostStore();
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
         <CreatePost />
         <div className="space-y-6">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          {loading ? (
+            <div className="flex justify-center py-10">
+              <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+            </div>
+          ) : posts.length > 0 ? (
+            posts.map((p) => (
+              <PostCard
+                key={p.id}
+                post={{
+                  id: p.id,
+                  username: p.author.username,
+                  content: p.content,
+                  likes: p.likes?.map((l: any) => l.userId) || [],
+                  comments: p.comments,
+                  createdAt: p.createdAt,
+                }}
+              />
+            ))
+          ) : (
+            <p className="text-center text-gray-500 dark:text-gray-400">
+              No posts yet.
+            </p>
+          )}
         </div>
       </div>
     </div>

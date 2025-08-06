@@ -1,68 +1,57 @@
 import { create } from 'zustand';
+import axios from 'axios';
+import backendUrl from '../backendURI';
 
-export interface Comment {
+interface Author {
   id: string;
-  userId: string;
   username: string;
-  avatar?: string;
+}
+
+interface Comment {
+  id: string;
   content: string;
+  author: Author;
   createdAt: string;
 }
 
-export interface Post {
-  id: string;
+interface Like {
   userId: string;
-  username: string;
-  avatar?: string;
+}
+
+interface Post {
+  id: string;
   content: string;
-  likes: string[];
+  createdAt: string;
+  author: Author;
   comments: Comment[];
-  createdAt: string;
+  likes: Like[]; 
 }
 
-interface PostState {
+interface PostStore {
   posts: Post[];
-  setPosts: (posts: Post[]) => void;
+  loading: boolean;
+  fetchPosts: () => Promise<void>;
   addPost: (post: Post) => void;
-  updatePost: (postId: string, updates: Partial<Post>) => void;
-  deletePost: (postId: string) => void;
-  likePost: (postId: string, userId: string) => void;
-  addComment: (postId: string, comment: Comment) => void;
 }
 
-export const usePostStore = create<PostState>((set) => ({
+export const usePostStore = create<PostStore>((set) => ({
   posts: [],
-  setPosts: (posts) => set({ posts }),
-  addPost: (post) => set((state) => ({ posts: [post, ...state.posts] })),
-  updatePost: (postId, updates) =>
+  loading: false,
+  addPost: (post) =>
     set((state) => ({
-      posts: state.posts.map((post) =>
-        post.id === postId ? { ...post, ...updates } : post
-      ),
+      posts: [post, ...state.posts], // latest first
     })),
-  deletePost: (postId) =>
-    set((state) => ({
-      posts: state.posts.filter((post) => post.id !== postId),
-    })),
-  likePost: (postId, userId) =>
-    set((state) => ({
-      posts: state.posts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              likes: post.likes.includes(userId)
-                ? post.likes.filter((id) => id !== userId)
-                : [...post.likes, userId],
-            }
-          : post
-      ),
-    })),
-  addComment: (postId, comment) =>
-    set((state) => ({
-      posts: state.posts.map((post) =>
-        post.id === postId
-          ? { ...post, comments: [...post.comments, comment] }
-          : post
-      ),
-    })),
+  fetchPosts: async () => {
+    set({ loading: true }); // ✅ start loader before API call
+    try {
+      const res = await axios.get<{ posts: Post[] }>(
+        `${backendUrl}/api/posts/`,
+        { withCredentials: true }
+      );
+      set({ posts: res.data.posts, loading: false }); // ✅ stop loader after success
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      set({ loading: false }); // ✅ stop loader on error
+    }
+  },
 }));

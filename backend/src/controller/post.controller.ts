@@ -10,11 +10,16 @@ export const createPost = async (req: Request, res: Response) => {
   if (!content) return res.status(400).json({ error: 'Content is required' });
 
   const post = await prisma.post.create({
-    data: {
-      content,
-      authorId:userId,
-    },
+    data: { content, authorId: userId },
+    include: {
+      author: { select: { id: true, username: true } },
+      comments: {
+        include: { author: { select: { id: true, username: true } } }
+      },
+      likes: true
+    }
   });
+
 
   res.status(201).json(post);
 };
@@ -64,4 +69,37 @@ export const commentOnPost = async (req: Request, res: Response) => {
   });
 
   res.status(201).json(comment);
+};
+
+
+export const getAllPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: 'desc', // latest first
+      },
+      include: {
+        author: { // JOIN with User table
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        comments: {
+          orderBy: { createdAt: 'asc' },
+          include: {
+            author: { // JOIN with User table
+              select: { id: true, username: true },
+            },
+          },
+        },
+        likes: true, // optional
+      },
+    });
+
+    res.json({ posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 };
