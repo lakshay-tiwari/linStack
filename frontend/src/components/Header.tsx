@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center px-4 py-2 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center px-4 py-2 rounded-lg transition-all duration-200 , cursor-pointer ${
                     currentPage === item.id
                       ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400"
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"

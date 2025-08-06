@@ -4,11 +4,13 @@ import axios from "axios";
 import backendUrl from "../../backendURI";
 import toast from "react-hot-toast";
 import { usePostStore } from "../../store/postStore";
+import { useAuthStore } from "../../store/authStore";
 
 export const CreatePost: React.FC = () => {
   const [post, setPost] = useState("");
   const [loading, setLoading] = useState(false); // ✅ loading state
   const addPost = usePostStore((state) => state.addPost);
+  const user = useAuthStore((state) => state.username);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +47,7 @@ export const CreatePost: React.FC = () => {
     >
       <div className="flex space-x-4">
         <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-lg">
-          S
+          {user[0].toUpperCase()}
         </div>
         <div className="flex-1">
           <textarea
@@ -53,7 +55,7 @@ export const CreatePost: React.FC = () => {
             rows={3}
             value={post}
             onChange={(e) => setPost(e.target.value)}
-            disabled={loading} // ✅ disable when posting
+            disabled={loading} 
             className="w-full p-4 bg-gray-50 dark:bg-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border-none resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
           />
         </div>
