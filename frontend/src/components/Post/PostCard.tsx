@@ -16,13 +16,16 @@ interface PostCardProps {
 export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const [showComments, setShowComments] = useState(false);
 
-  const formatTimeAgo = (dateString: string) => {
+  const formatFullDateTime = (dateString: string) => {
     const date = new Date(dateString);
-    const diff = Math.floor((Date.now() - date.getTime()) / 60000);
-    if (diff < 1) return "Just now";
-    if (diff < 60) return `${diff}m ago`;
-    if (diff < 1440) return `${Math.floor(diff / 60)}h ago`;
-    return `${Math.floor(diff / 1440)}d ago`;
+    return date.toLocaleString("en-US", {
+      month: "short", // Feb
+      day: "numeric", // 6
+      year: "numeric", // 2025
+      hour: "numeric", // 3
+      minute: "2-digit", // 45
+      hour12: true, // AM/PM format
+    });
   };
 
   return (
@@ -34,7 +37,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </div>
           <div className="text-white">
             <h3 className="font-semibold">{post.username}</h3>
-            <p className="text-sm text-gray-500">{formatTimeAgo(post.createdAt)}</p>
+            <p className="text-sm text-gray-500">{formatFullDateTime(post.createdAt)}</p>
           </div>
         </div>
         <MoreHorizontal className="w-5 h-5 text-gray-500" />
