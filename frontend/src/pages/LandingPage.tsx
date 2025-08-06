@@ -1,18 +1,16 @@
 import React from 'react';
-import { 
-  ArrowRight, 
-  Users, 
-  MessageSquare, 
-  TrendingUp, 
-  Shield, 
-  Globe,
+import {
+  ArrowRight,
+  Users,
+  MessageSquare,
+  TrendingUp,
+  Shield,
   Star,
-  CheckCircle,
   Sun,
   Moon
 } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router";
 
 const LandingPage: React.FC<any> = () => {
   const { isDark, toggle } = useTheme();
@@ -64,6 +62,7 @@ const LandingPage: React.FC<any> = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+      
       {/* Header */}
       <header className="relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,13 +80,13 @@ const LandingPage: React.FC<any> = () => {
               </button>
               <button
                 onClick={() => navigate('/signin')}
-                className="px-6 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200"
+                className="hidden sm:inline-block px-6 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200"
               >
                 Sign In
               </button>
               <button
                 onClick={() => navigate('/signup')}
-                className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="hidden sm:inline-block px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Get Started
               </button>
@@ -101,25 +100,25 @@ const LandingPage: React.FC<any> = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-400/5 dark:to-purple-400/5"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-8 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-8 leading-tight">
               Connect, Share,{' '}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Grow
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
               Join the professional network that helps you build meaningful connections,
               share valuable insights, and accelerate your career growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate('/signin')}
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold text-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-xl hover:shadow-2xl flex items-center justify-center space-x-2"
+                className="w-full sm:w-auto px-4 sm:px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold text-lg sm:text-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-xl hover:shadow-2xl flex items-center justify-center space-x-2"
               >
                 <span>Start Connecting</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button className="px-8 py-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-gray-700 dark:text-gray-300 rounded-xl font-semibold text-lg hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 border border-white/20 dark:border-gray-700/20">
+              <button className="w-full sm:w-auto px-4 sm:px-8 py-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-gray-700 dark:text-gray-300 rounded-xl font-semibold text-lg sm:text-xl hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 border border-white/20 dark:border-gray-700/20">
                 Learn More
               </button>
             </div>
@@ -127,14 +126,14 @@ const LandingPage: React.FC<any> = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features */}
       <section className="py-24 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Everything you need to succeed
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Powerful features designed to help you build your professional network
               and advance your career.
             </p>
@@ -161,7 +160,7 @@ const LandingPage: React.FC<any> = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -175,25 +174,25 @@ const LandingPage: React.FC<any> = () => {
               <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                 10M+
               </div>
-              <div className="text-xl text-gray-600 dark:text-gray-300">Active Users</div>
+              <div className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">Active Users</div>
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                 50M+
               </div>
-              <div className="text-xl text-gray-600 dark:text-gray-300">Connections Made</div>
+              <div className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">Connections Made</div>
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                 100K+
               </div>
-              <div className="text-xl text-gray-600 dark:text-gray-300">Companies</div>
+              <div className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">Companies</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Testimonials */}
       <section className="py-24 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -235,18 +234,18 @@ const LandingPage: React.FC<any> = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="py-24">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Ready to elevate your career?
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-12">
             Join SocialConnect today and start building meaningful professional relationships.
           </p>
           <button
             onClick={() => navigate('/signup')}
-            className="px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold text-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-xl hover:shadow-2xl"
+            className="w-full sm:w-auto px-4 sm:px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold text-lg sm:text-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-xl hover:shadow-2xl"
           >
             Get Started for Free
           </button>
@@ -266,6 +265,7 @@ const LandingPage: React.FC<any> = () => {
           </div>
         </div>
       </footer>
+
     </div>
   );
 };
