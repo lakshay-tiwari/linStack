@@ -53,7 +53,7 @@ It’s built with a **TypeScript full-stack** approach for scalability and devel
 
 #### **Step 1 – Clone the Repository**  
 ```bash
-git clone https://github.com/lakshay-tiwari/linstack
+git clone https://github.com/lakshay-tiwari/social-connect
 cd social-connect
 ```
 
@@ -111,30 +111,6 @@ We plan to continuously enhance **Social Connect** with exciting features to mak
 
 > These features are part of the upcoming roadmap and will be rolled out in future versions.
 ---
-
-## 📅 Future Updates & Scope  
-
-We plan to continuously enhance **Social Connect** with exciting features to make it a more engaging platform:  
-
-- 💬 **Comments on Posts** – Allow users to comment and start discussions.  
-- 👍 **Likes on Posts** – Add like/reaction functionality for better engagement.  
-- 🤝 **Follow & Following System** – Users can follow others to personalize their feed.  
-- 📰 **Following Feed Filter** – Option to view posts only from people you follow.  
-
-> These features are part of the upcoming roadmap and will be rolled out in future versions.
----
-
-## 📅 Future Updates & Scope  
-
-We plan to continuously enhance **Social Connect** with exciting features to make it a more engaging platform:  
-
-- 💬 **Comments on Posts** – Allow users to comment and start discussions.  
-- 👍 **Likes on Posts** – Add like/reaction functionality for better engagement.  
-- 🤝 **Follow & Following System** – Users can follow others to personalize their feed.  
-- 📰 **Following Feed Filter** – Option to view posts only from people you follow.  
-
-> These features are part of the upcoming roadmap and will be rolled out in future versions.
-
 
 <br><br>
 ---
