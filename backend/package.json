@@ -1,10 +1,17 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "This contain the backend of our application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node src/server.ts",
+    "build": "tsc -b",
+    "start": "node dist/server.js",
+    "serve": "npm run build && npm run start",
+    "db:dev": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +34,8 @@
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
-    "prisma": "^6.13.0"
+    "nodemon": "^3.1.10",
+    "prisma": "^6.13.0",
+    "ts-node": "^10.9.2"
   }
 }

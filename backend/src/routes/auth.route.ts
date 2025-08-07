@@ -16,7 +16,7 @@ router.post('/signup', signUp);
 router.post('/signin', signIn);
 
 // Sign out the current user
-router.post('/signout', verifyToken, signOut);
+router.get('/signout', verifyToken, signOut);
 
 // Get the currently authenticated user's data
 router.get('/me', verifyToken, getMe);

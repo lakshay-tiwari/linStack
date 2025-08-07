@@ -10,7 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import backendUrl from '../backendURI';
-
+import { useAuthStore } from "../store/authStore";
 
 interface SignupFormData {
   username: string;
@@ -26,6 +26,7 @@ const SignupPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>();
   const navigate = useNavigate();
+  const setUser = useAuthStore((state)=> state.setUser);
 
   //@ts-ignore -> used for artificial delay
   async function delay(ms: number) {
@@ -44,6 +45,7 @@ const SignupPage: React.FC = () => {
       //@ts-ignore
       const response = await axios.post(`${backendUrl}/api/auth/signup`,signupBody , { withCredentials: true});
       toast.success('SignUp Successfully');
+      setUser(response.data.user);
       navigate('/home');
      
     } catch (error: any) {

@@ -10,6 +10,8 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import backendUrl from '../backendURI';
 import toast from "react-hot-toast";
+import { useAuthStore } from "../store/authStore";
+
 
 interface SignupFormData {
   username: string;
@@ -25,6 +27,7 @@ const SigninPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>();
   const navigate = useNavigate();
+  const setUser = useAuthStore((state)=> state.setUser);
 
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
@@ -37,6 +40,7 @@ const SigninPage: React.FC = () => {
       //@ts-ignore
       const response = await axios.post(`${backendUrl}/api/auth/signin`, signinBody , { withCredentials: true});
       toast.success("Signin Successfull");
+      setUser(response.data.user);
       navigate('/home');
     } catch (error: any) {
       console.log(error);

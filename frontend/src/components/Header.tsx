@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Sun, Moon, User, LogOut, Home, Search, Bell, Menu, X } from "lucide-react";
+import axios from "axios";
+import backendUrl from "../backendURI";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
+import { useAuthStore } from "../store/authStore";
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -15,7 +20,9 @@ const Header: React.FC<HeaderProps> = ({
   toggleTheme,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const mockUser = { username: "John Doe" };
+  const username = useAuthStore((state) => state.username);
+  const mockUser = { username };
+  const navigate = useNavigate();
 
   // Lock scroll when mobile menu is open
   useEffect(() => {
@@ -86,8 +93,19 @@ const Header: React.FC<HeaderProps> = ({
                   {mockUser.username.charAt(0).toUpperCase()}
                 </div>
                 <button
-                  onClick={() => alert("Logged out!")}
-                  className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  onClick={async ()=>{
+                    try {
+                      console.log('hi')
+                      //@ts-ignore
+                      const response = await axios.get(`${backendUrl}/api/auth/signout`, { withCredentials: true });
+                      toast.success('Signout Successfully!');
+                      navigate('/signin');
+                    } catch (error) {
+                      console.log(error);
+                      toast.error('Something went wrong');
+                    }
+                  }}
+                  className="p-2 rounded-full cursor-pointer text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <LogOut className="w-5 h-5" />
                 </button>

@@ -33,8 +33,16 @@ export const signUp = async (req: Request, res: Response) => {
     secure: NODE_ENV === "production"
    });
 
-
-    res.json({ message: 'Signup successful' })
+    res.json({
+      message: 'Signin successful',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt
+      }
+    });
+    
   } catch (error) {
     console.error('Signup error:', error)
     res.status(500).json({ error: 'Internal server error' })
@@ -68,7 +76,16 @@ export const signIn = async (req: Request, res: Response) => {
       secure: NODE_ENV === "production"
      });
     
-    res.json({ message: 'Signin successful' })
+    res.json({
+      message: 'Signin successful',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt
+      }
+    });
+
   } catch (error) {
     console.error('Signin error:', error)
     res.status(500).json({ error: 'Internal server error' })

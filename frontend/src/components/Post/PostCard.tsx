@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Heart, MessageCircle, Share, MoreHorizontal } from "lucide-react";
 import CommentSection from "./CommentSection";
-
+import { comingSoonToast } from "../../utils/toastUtils";
 interface PostCardProps {
   post: {
     id: string;
@@ -14,6 +14,7 @@ interface PostCardProps {
 }
 
 export const PostCard: React.FC<PostCardProps> = ({ post }) => {
+  //@ts-ignore
   const [showComments, setShowComments] = useState(false);
 
   const formatFullDateTime = (dateString: string) => {
@@ -51,13 +52,16 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           <span>{post.likes.length}</span>
         </button>
         <button
-          onClick={() => setShowComments(!showComments)}
+          onClick={() => {
+            comingSoonToast();
+            // setShowComments(!showComments)
+          }}
           className="flex items-center space-x-2 text-gray-500"
         >
           <MessageCircle className="w-5 h-5" />
           <span>{post.comments.length}</span>
         </button>
-        <button className="flex items-center space-x-2 text-gray-500">
+        <button className="flex items-center space-x-2 text-gray-500" >
           <Share className="w-5 h-5" />
           <span>Share</span>
         </button>
