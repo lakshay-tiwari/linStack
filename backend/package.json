@@ -6,12 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node src/server.ts",
+    "prebuild":"npm run install:prod && npm run db:deploy",
     "build": "tsc -b",
     "start": "node dist/server.js",
-    "serve": "npm run build && npm run start",
+    "serve": "npm run db:deploy && npm run build && npm run start",
     "db:dev": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "install:prod":"npm ci --omit=dev"
   },
   "keywords": [],
   "author": "",
