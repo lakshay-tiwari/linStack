@@ -1,3 +1,3 @@
-const backendUrl:String = import.meta.env.BACKEND_URI || 'http://localhost:3000'
+const backendUrl:string = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000';
 
 export default backendUrl;

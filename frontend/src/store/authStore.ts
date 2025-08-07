@@ -19,7 +19,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       const res = await axios.get(`${backendUrl}/api/auth/me`, {
         withCredentials: true,
       });
-      console.log(res.data);
       set({ user: res.data, loading: false });
       set({username : res.data.username});
     } catch (error) {
