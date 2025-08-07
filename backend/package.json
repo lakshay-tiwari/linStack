@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node src/server.ts",
-    "prebuild":"npm run install:prod && npm run db:deploy",
     "build": "tsc -b",
     "start": "node dist/server.js",
     "serve": "npm run db:deploy && npm run build && npm run start",
