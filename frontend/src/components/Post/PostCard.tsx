@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Heart, MessageCircle, Share, MoreHorizontal } from "lucide-react";
 import CommentSection from "./CommentSection";
 import { comingSoonToast } from "../../utils/toastUtils";
+import { getFirstLetter } from "../../utils/getFirstLetter";
+import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 interface PostCardProps {
   post: {
     id: string;
@@ -34,10 +36,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
       <div className="p-6 pb-4 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-lg">
-            {post.username.charAt(0)}
+            {getFirstLetter(post.username)}
           </div>
           <div className="text-white">
-            <h3 className="font-semibold">{post.username}</h3>
+            <h3 className="font-semibold">{capitalizeFirstLetter(post.username)}</h3>
             <p className="text-sm text-gray-500">{formatFullDateTime(post.createdAt)}</p>
           </div>
         </div>

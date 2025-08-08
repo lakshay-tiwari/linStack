@@ -5,6 +5,8 @@ import backendUrl from "../backendURI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
+import { getFirstLetter } from "../utils/getFirstLetter";
+import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter";
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -20,8 +22,8 @@ const Header: React.FC<HeaderProps> = ({
   toggleTheme,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const username = useAuthStore((state) => state.username);
-  const mockUser = { username };
+  const user = useAuthStore((state) => state.user);
+  const username = user?.username || '';
   const navigate = useNavigate();
 
   // Lock scroll when mobile menu is open
@@ -90,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({
 
               <div className="hidden md:flex items-center space-x-3">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-medium">
-                  {mockUser.username.charAt(0).toUpperCase()}
+                  {getFirstLetter(username)}
                 </div>
                 <button
                   onClick={async ()=>{
@@ -161,14 +163,24 @@ const Header: React.FC<HeaderProps> = ({
           <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-medium">
-                {mockUser.username.charAt(0).toUpperCase()}
+                {getFirstLetter(username)}
               </div>
               <span className="text-gray-800 dark:text-gray-200 font-medium">
-                {mockUser.username}
+                {capitalizeFirstLetter(username)}
               </span>
             </div>
             <button
-              onClick={() => alert("Logged out!")}
+              onClick={async () => {
+                try {
+                  //@ts-ignore
+                  const res = await axios.get(`${backendUrl}/api/auth/signout`, { withCredentials: true });
+                  toast.success('Signout Successfully!');
+                  navigate('/signin');
+                } catch (error) {
+                  console.log(error);
+                  toast.error('Something went wrong');
+                }
+              }}
               className="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
             >
               <LogOut className="w-5 h-5 mr-2" />

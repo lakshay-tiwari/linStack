@@ -5,12 +5,14 @@ import backendUrl from "../../backendURI";
 import toast from "react-hot-toast";
 import { usePostStore } from "../../store/postStore";
 import { useAuthStore } from "../../store/authStore";
+import { getFirstLetter } from "../../utils/getFirstLetter";
 
 export const CreatePost: React.FC = () => {
   const [post, setPost] = useState("");
   const [loading, setLoading] = useState(false); // ✅ loading state
   const addPost = usePostStore((state) => state.addPost);
-  const user = useAuthStore((state) => state.username);
+  const userData = useAuthStore((state) => state.user);
+  const user = userData?.username || "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +49,7 @@ export const CreatePost: React.FC = () => {
     >
       <div className="flex space-x-4">
         <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-lg">
-          {user[0].toUpperCase()}
+          {getFirstLetter(user)}
         </div>
         <div className="flex-1">
           <textarea

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Edit3, Calendar, Users, Loader2 } from "lucide-react";
 import { useUserStore } from "../../store/userStore";
 import PostCard from "../Post/PostCard";
+import { getFirstLetter } from "../../utils/getFirstLetter";
+import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 
 const ProfilePage: React.FC = () => {
   const { user, fetchUser, loading } = useUserStore();
@@ -36,13 +38,13 @@ const ProfilePage: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-6">
               <div className="relative -mt-16 sm:-mt-20">
                 <div className="w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold border-4 border-white dark:border-gray-800 shadow-lg">
-                  {user.username.charAt(0).toUpperCase()}
+                  {getFirstLetter(user.username)}
                 </div>
               </div>
               <div className="flex-1 mt-4 sm:mt-0">
                 <div className="flex items-center justify-between mb-2">
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {user.username}
+                    {capitalizeFirstLetter(user.username)}
                   </h1>
                   <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
                     <Edit3 className="w-4 h-4" />

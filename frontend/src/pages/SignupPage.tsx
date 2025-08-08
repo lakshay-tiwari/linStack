@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import backendUrl from '../backendURI';
 import { useAuthStore } from "../store/authStore";
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 
 interface SignupFormData {
   username: string;
@@ -36,7 +37,7 @@ const SignupPage: React.FC = () => {
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
     const signupBody:SignupFormData = {
-      username: data.username,
+      username: capitalizeFirstLetter(data.username),
       email: data.email,
       password: data.password,
       bio: data.bio 
